@@ -93,9 +93,6 @@ all_dat %>% filter(Type == "Nation" | (Type == "State" & Province_State == "Texa
   geom_line(aes(col = Type)) + 
   ylab("Cumulative Cases per 1000") +
   xlab("Time")
-                   
-# Export plotting dataframe to subfolder of shiny app directory
-save(all_dat, file = "coronavirus_plot_app/plot_data/all_dat.RData")
 
 # EDA (for Kansas mask orders)
 long_dat %>% filter(Province_State == "Kansas") %>% ggplot(mapping = aes(x = date, y = cases_pc, group = Combined_Key)) + geom_line(aes(col = Combined_Key), show.legend = FALSE)
