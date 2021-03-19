@@ -2,9 +2,6 @@
 # March 2021
 # R Shiny app with C19 data
 
-# ERROR: can't get the county selectizeInput to show choices after choosing state
-# also, there's an error when using filter() get county choices, but not when using long_dat[]
-
 library(shiny) # shiny app
 library(dplyr) 
 library(readr)
@@ -12,7 +9,6 @@ library(ggplot2) # plotting
 library(magrittr) # for %<>%
 library(zoo) # rollmean() for rolling avg
 
-#load("plot_data/all_dat.RData")
 ###################
 # My plotting app #
 # Basic:
@@ -96,12 +92,7 @@ ui <- fluidPage(
                              selectizeInput("my_state",
                                             label = "Select state/province:",
                                             choices = NULL),
-                             #selectizeInput("my_county",
-                              #              label = "Select county:",
-                              #              choices = NULL),
                              uiOutput("my_county"),
-                             #textOutput("county_selection"),
-                             
                              dateRangeInput("date_range",
                                             label = "Select date range:",
                                             start = "2020-01-22",
@@ -131,12 +122,7 @@ server <- function(input, output, session) {
   county_options <- reactive({
     unique(all_dat$Combined_Key[all_dat$Province_State == input$my_state & !is.na(all_dat$Combined_Key)])
   })
-    # prove reactive function returns list of state-dependent counties
-    #output$county_selection <- renderText({
-    #  counties_reactive <- county_options()
-    #  head(counties_reactive)
-    #})
-  # county selection -- needs to depend on state
+  # county selection -- depends on state
   output$my_county <- renderUI({
     counties_reactive <- county_options()
     selectizeInput("my_county", 
