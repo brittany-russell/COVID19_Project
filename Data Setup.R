@@ -79,7 +79,7 @@ nation_dat <- long_dat %>% group_by(date) %>%
   mutate(daily_cases_change_pc = 1000 * daily_cases_change/Population, daily_deaths_change_pc = 1000 * daily_deaths_change/Population) %>%
   add_column("Type" = "Nation")
 
-## Daily cases and daily change are really jagged -- 7-day rolling avg is probably better visually
+## Daily cases and daily change are really jagged -- 7-day rolling avg is better visually
 long_dat %<>% mutate(rolling_daily_cases = rollmean(daily_cases_pc, k = 7, fill = NA), rolling_daily_deaths = rollmean(daily_deaths_pc, k = 7, fill = NA))
 state_dat %<>% mutate(rolling_daily_cases = rollmean(daily_cases_pc, k = 7, fill = NA), rolling_daily_deaths = rollmean(daily_deaths_pc, k = 7, fill = NA))
 nation_dat %<>% mutate(rolling_daily_cases = rollmean(daily_cases_pc, k = 7, fill = NA), rolling_daily_deaths = rollmean(daily_deaths_pc, k = 7, fill = NA))
@@ -88,11 +88,15 @@ nation_dat %<>% mutate(rolling_daily_cases = rollmean(daily_cases_pc, k = 7, fil
 all_dat <- bind_rows(long_dat, state_dat, nation_dat)
 all_dat$Type <- factor(all_dat$Type, levels = c("Nation", "State", "County"))
 
+# Test plot
 all_dat %>% filter(Type == "Nation" | (Type == "State" & Province_State == "Texas") | (Type == "County" & Combined_Key == "Bell, Texas, US")) %>%
   ggplot(mapping = aes(x = date, y = rolling_daily_cases, group = Type)) + 
   geom_line(aes(col = Type)) + 
   ylab("Cumulative Cases per 1000") +
   xlab("Time")
+
+# Save data for plotting
+# save(all_dat, file = "all_dat.RData") -- find the right path for saving to COVID19_Visualizer repo
 
 # EDA (for Kansas mask orders)
 long_dat %>% filter(Province_State == "Kansas") %>% ggplot(mapping = aes(x = date, y = cases_pc, group = Combined_Key)) + geom_line(aes(col = Combined_Key), show.legend = FALSE)
