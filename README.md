@@ -1,6 +1,6 @@
 # COVID19_Project
 
-Repository for code visualizing and analyzing the COVID-19 pandemic, using data from the 
+Repository for visualizing and analyzing the COVID-19 pandemic, using data from the 
 COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University
 (JHU CSSE COVID-19 Data for short, https://github.com/CSSEGISandData/COVID-19).
 
